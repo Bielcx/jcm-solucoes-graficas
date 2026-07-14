@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+import { siteConfig } from '../data/config';
+
+const destaques = products.slice(0, 4);
+---
+
+<BaseLayout title="Início">
+  <section class="bg-brand-50">
+    <div class="mx-auto max-w-6xl px-4 py-16 text-center sm:py-24">
+      <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+        Embalagens e materiais gráficos, prontos ou personalizados
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-gray-600">
+        Monte seu pedido no catálogo e finalize direto pelo WhatsApp. Ou peça um orçamento
+        personalizado com a marca do seu negócio.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a
+          href="/catalogo"
+          class="rounded-md bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700"
+        >
+          Ver catálogo
+        </a>
+        <a
+          href="/orcamento"
+          class="rounded-md border border-gray-300 px-6 py-3 font-semibold text-gray-700 hover:border-brand-500 hover:text-brand-600"
+        >
+          Pedir orçamento personalizado
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-14">
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-gray-900">Mais pedidos</h2>
+      <a href="/catalogo" class="text-sm font-medium text-brand-600 hover:underline">
+        Ver tudo →
+      </a>
+    </div>
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {destaques.map((p) => <ProductCard product={p} />)}
+    </div>
+  </section>
+
+  <section class="border-t border-gray-100 bg-gray-50">
+    <div class="mx-auto max-w-6xl px-4 py-14 text-center">
+      <h2 class="text-xl font-bold text-gray-900">Sua marca na embalagem</h2>
+      <p class="mx-auto mt-2 max-w-xl text-gray-600">
+        Trabalhamos também com produtos personalizados sob orçamento — envie sua arte ou peça
+        ajuda com o design.
+      </p>
+      <a
+        href="/orcamento"
+        class="mt-6 inline-block rounded-md bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700"
+      >
+        Solicitar orçamento
+      </a>
+    </div>
+  </section>
+</BaseLayout>

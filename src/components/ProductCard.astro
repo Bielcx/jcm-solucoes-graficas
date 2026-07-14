@@ -1,0 +1,33 @@
+---
+import type { Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const preco = product.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+---
+
+<a
+  href={`/catalogo/${product.slug}`}
+  class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 transition hover:border-brand-500 hover:shadow-md"
+>
+  <div class="aspect-square w-full bg-gray-100">
+    <img
+      src={product.imagem}
+      alt={product.nome}
+      loading="lazy"
+      class="h-full w-full object-cover"
+      onerror="this.src='/images/placeholder.svg'"
+    />
+  </div>
+  <div class="flex flex-1 flex-col gap-1 p-4">
+    <h3 class="font-semibold text-gray-900 group-hover:text-brand-600">{product.nome}</h3>
+    <p class="text-sm text-gray-500">{product.descricaoCurta}</p>
+    <div class="mt-auto flex items-center justify-between pt-3">
+      <span class="font-semibold text-brand-700">{preco}</span>
+      <span class="text-xs text-gray-400">mín. {product.qtdMinima} un.</span>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,8 @@
+# Config de referência para deploy no Cloudflare Pages.
+# O jeito mais simples é conectar o repositório direto no dashboard da
+# Cloudflare Pages (Workers & Pages > Create > Pages > Connect to Git):
+#   Build command: npm run build
+#   Build output directory: dist
+name = "jcm-solucoes-graficas"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-01-01"

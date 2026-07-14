@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Orçamento personalizado">
+  <div class="mx-auto max-w-2xl px-4 py-10">
+    <h1 class="text-2xl font-bold text-gray-900">Orçamento personalizado</h1>
+    <p class="mt-2 text-gray-600">
+      Preencha os dados abaixo e enviaremos sua solicitação direto pelo WhatsApp. Depois é só nos
+      mandar a arte ou logo, se já tiver.
+    </p>
+
+    <form id="orcamento-form" class="mt-8 space-y-5">
+      <div>
+        <label for="nome" class="block text-sm font-medium text-gray-700">Nome</label>
+        <input
+          type="text"
+          id="nome"
+          required
+          class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label for="produto" class="block text-sm font-medium text-gray-700">
+          Produto de interesse
+        </label>
+        <input
+          type="text"
+          id="produto"
+          placeholder="Ex: Caixa de Pizza 35cm, sacola personalizada..."
+          class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label for="quantidade" class="block text-sm font-medium text-gray-700">
+          Quantidade estimada
+        </label>
+        <input
+          type="text"
+          id="quantidade"
+          placeholder="Ex: 200 unidades"
+          class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label for="detalhes" class="block text-sm font-medium text-gray-700">
+          Detalhes da personalização
+        </label>
+        <textarea
+          id="detalhes"
+          rows="4"
+          placeholder="Cores, logo, tamanho, prazo desejado..."
+          class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full rounded-md bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
+      >
+        Enviar pelo WhatsApp
+      </button>
+    </form>
+  </div>
+
+  <script>
+    import { buildWhatsAppLink } from '../data/config';
+
+    const params = new URLSearchParams(window.location.search);
+    const produtoParam = params.get('produto');
+    if (produtoParam) {
+      const produtoInput = document.getElementById('produto') as HTMLInputElement;
+      produtoInput.value = produtoParam;
+    }
+
+    const form = document.getElementById('orcamento-form') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nome = (document.getElementById('nome') as HTMLInputElement).value;
+      const produto = (document.getElementById('produto') as HTMLInputElement).value;
+      const quantidade = (document.getElementById('quantidade') as HTMLInputElement).value;
+      const detalhes = (document.getElementById('detalhes') as HTMLTextAreaElement).value;
+
+      const linhas = [
+        'Olá! Gostaria de um orçamento personalizado.',
+        '',
+        `Nome: ${nome}`,
+      ];
+      if (produto) linhas.push(`Produto: ${produto}`);
+      if (quantidade) linhas.push(`Quantidade estimada: ${quantidade}`);
+      if (detalhes) linhas.push(`Detalhes: ${detalhes}`);
+
+      window.open(buildWhatsAppLink(linhas.join('\n')), '_blank');
+    });
+  </script>
+</BaseLayout>

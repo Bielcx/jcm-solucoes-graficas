@@ -1,0 +1,42 @@
+---
+import { siteConfig } from '../data/config';
+---
+
+<header class="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+    <a href="/" class="text-lg font-bold text-brand-700">
+      {siteConfig.nome}
+    </a>
+    <nav class="flex items-center gap-5 text-sm font-medium text-gray-700">
+      <a href="/catalogo" class="hidden hover:text-brand-600 sm:inline">Catálogo</a>
+      <a href="/orcamento" class="hidden hover:text-brand-600 sm:inline">Orçamento</a>
+      <a
+        href="/carrinho"
+        id="cart-link"
+        class="relative flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 hover:border-brand-500 hover:text-brand-600"
+      >
+        Carrinho
+        <span
+          id="cart-count"
+          class="ml-1 hidden min-w-5 rounded-full bg-brand-500 px-1.5 text-center text-xs font-semibold text-white"
+          >0</span
+        >
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { getCartCount, onCartUpdate } from '../scripts/cart';
+
+  function render() {
+    const el = document.getElementById('cart-count');
+    if (!el) return;
+    const count = getCartCount();
+    el.textContent = String(count);
+    el.classList.toggle('hidden', count === 0);
+  }
+
+  render();
+  onCartUpdate(render);
+</script>
