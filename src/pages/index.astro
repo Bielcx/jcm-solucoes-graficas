@@ -36,21 +36,21 @@ const bullets = [
         Escolha no catálogo, monte o pedido e finalize na conversa — sem cadastro, sem plataforma
         no meio. Precisa de algo sob medida? A gente orça.
       </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <div class="mt-[clamp(24px,5vw,36px)] flex flex-wrap justify-center gap-3">
         <a
           href="/catalogo"
-          class="rounded-md bg-olive-500 px-7 py-3.5 font-display text-[15px] font-semibold text-cream hover:bg-olive-600"
+          class="rounded-md bg-olive-500 px-[clamp(20px,6vw,28px)] py-[clamp(11px,3vw,14px)] font-display text-[15px] font-semibold text-cream hover:bg-olive-600"
         >
           Ver catálogo
         </a>
         <a
           href="/orcamento"
-          class="rounded-md border border-ink/25 bg-surface/50 px-7 py-3.5 font-display text-[15px] font-semibold text-ink hover:border-olive-500 hover:text-olive-500"
+          class="rounded-md border border-ink/25 bg-surface/50 px-[clamp(20px,6vw,28px)] py-[clamp(11px,3vw,14px)] font-display text-[15px] font-semibold text-ink hover:border-olive-500 hover:text-olive-500"
         >
           Orçamento personalizado
         </a>
       </div>
-      <div class="mt-11 flex flex-wrap justify-center gap-x-7 gap-y-2.5 text-[13px] text-ink-soft">
+      <div class="mt-[clamp(28px,6vw,44px)] flex flex-wrap justify-center gap-x-7 gap-y-2.5 text-[13px] text-ink-soft">
         {
           bullets.map((b) => (
             <span class="flex items-center gap-[7px]">
@@ -75,7 +75,7 @@ const bullets = [
           Ver tudo →
         </a>
       </div>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(195px,1fr))] gap-4.5">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3.5 sm:gap-4.5">
         {destaques.map((p) => <ProductCard product={p} />)}
       </div>
     </div>
@@ -88,10 +88,10 @@ const bullets = [
       <p class="mx-auto mt-2 max-w-[480px] text-center text-sm text-ink-soft">
         Do catálogo ao WhatsApp em quatro passos. Sem cadastro em momento nenhum.
       </p>
-      <div class="mt-11 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-y-7">
+      <div class="mt-11 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-6 gap-y-6">
         {
           passos.map((p) => (
-            <div class="border-l border-cream-border px-6">
+            <div class="border-t border-l border-cream-border py-5 pl-6">
               <div class="font-display text-[13px] font-bold tracking-[0.12em] text-olive-500">
                 {p.numero}
               </div>

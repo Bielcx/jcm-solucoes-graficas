@@ -21,8 +21,7 @@ import { products, categorias } from '../../data/products';
       <button
         type="button"
         data-categoria-pill=""
-        data-active
-        class="filter-pill rounded-full border border-cream-border px-[18px] py-[7px] font-display text-[13px] font-semibold text-ink-soft hover:border-olive-400"
+        class="filter-pill rounded-full border border-olive-500 bg-olive-500 px-[18px] py-[7px] font-display text-[13px] font-semibold text-cream"
       >
         Todos
       </button>
@@ -41,7 +40,7 @@ import { products, categorias } from '../../data/products';
 
     <div
       id="grid-produtos"
-      class="mt-7 grid grid-cols-[repeat(auto-fill,minmax(195px,1fr))] gap-[18px]"
+      class="mt-7 grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3.5 sm:gap-[18px]"
     >
       {
         products.map((p) => (
@@ -57,15 +56,10 @@ import { products, categorias } from '../../data/products';
     </p>
   </div>
 
-  <style>
-    .filter-pill[data-active] {
-      border-color: var(--color-olive-500);
-      background-color: var(--color-olive-500);
-      color: var(--color-cream);
-    }
-  </style>
-
   <script>
+    const ACTIVE = ['border-olive-500', 'bg-olive-500', 'text-cream'];
+    const INACTIVE = ['border-cream-border', 'text-ink-soft'];
+
     const cards = document.querySelectorAll<HTMLElement>('#grid-produtos [data-categoria]');
     const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
     const emptyMsg = document.getElementById('empty-msg');
@@ -80,7 +74,9 @@ import { products, categorias } from '../../data/products';
       emptyMsg?.classList.toggle('hidden', visibleCount > 0);
 
       pills.forEach((pill) => {
-        pill.toggleAttribute('data-active', (pill.dataset.categoriaPill || '') === categoria);
+        const isActive = (pill.dataset.categoriaPill || '') === categoria;
+        pill.classList.remove(...ACTIVE, ...INACTIVE);
+        pill.classList.add(...(isActive ? ACTIVE : INACTIVE));
       });
     }
 
