@@ -1,6 +1,8 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CartDrawer from '../components/CartDrawer.astro';
+import MobileCartBar from '../components/MobileCartBar.astro';
 import '../styles/global.css';
 import { siteConfig } from '../data/config';
 
@@ -17,15 +19,19 @@ const { title, description = siteConfig.descricao } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#14100b" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="description" content={description} />
     <title>{title} · {siteConfig.nome}</title>
   </head>
-  <body class="flex min-h-screen flex-col bg-white text-gray-900">
+  <body class="flex min-h-screen flex-col bg-cream text-ink">
     <Header />
-    <main class="flex-1">
+    <main class="flex-1 pb-20 sm:pb-0">
       <slot />
     </main>
     <Footer />
+    <CartDrawer />
+    <MobileCartBar />
   </body>
 </html>

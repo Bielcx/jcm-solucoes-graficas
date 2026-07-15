@@ -1,0 +1,67 @@
+---
+// Clientes reais atendidos pela JCM.
+// TODO: trocar `nome` pelo nome real de cada cliente (autorização pendente),
+// e preencher `logo` com o caminho do PNG/SVG assim que tivermos permissão de uso.
+const clientes = [
+  {
+    nome: 'Teatro Claro',
+    trabalho: 'Embalagens personalizadas de pipoca',
+    logo: '/images/clientes/teatro-claro.png',
+  },
+  {
+    // TODO: nome real do cliente da hamburgueria
+    nome: 'Hamburgueria parceira',
+    trabalho: 'Embalagens personalizadas para hambúrguer',
+    logo: '',
+  },
+];
+---
+
+<section class="bg-ink-inverse">
+  <div class="mx-auto grid max-w-6xl items-center gap-x-16 gap-y-10 px-5 py-[clamp(56px,8vw,72px)] [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
+    <div>
+      <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-300">
+        Clientes
+      </p>
+      <h2 class="mt-3.5 font-display text-[clamp(24px,3vw,34px)] font-bold leading-[1.15] text-cream text-balance">
+        Marcas que já saíram daqui
+      </h2>
+      <p class="mt-3.5 max-w-[400px] text-[15px] leading-relaxed text-cream/65 text-pretty">
+        Trabalhos personalizados entregues pra clientes reais — da arte à embalagem na mão do
+        cliente deles.
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      {
+        clientes.map((c) => (
+          <div class="flex items-center gap-5 border-t border-cream/10 py-[22px]">
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-cream/15 bg-cream/[0.06]">
+              {c.logo ? (
+                <img src={c.logo} alt={c.nome} class="h-full w-full object-contain p-2" />
+              ) : (
+                <span class="px-1.5 text-center font-mono text-[9px] text-cream/40">
+                  logo do cliente
+                </span>
+              )}
+            </div>
+            <div class="min-w-0">
+              <p class="font-display text-base font-bold tracking-[0.04em] text-cream">
+                {c.nome}
+              </p>
+              <p class="mt-1 text-[13px] text-cream/60">{c.trabalho}</p>
+            </div>
+          </div>
+        ))
+      }
+      <div class="border-t border-cream/10 pt-[18px]">
+        <p class="text-[12.5px] text-cream/40">
+          Sua marca pode ser a próxima →{' '}
+          <a href="/orcamento" class="font-semibold whitespace-nowrap text-olive-300">
+            pedir orçamento
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

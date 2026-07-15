@@ -1,0 +1,112 @@
+<div
+  id="cart-drawer-overlay"
+  class="fixed inset-0 z-50 hidden bg-ink/50"
+  aria-hidden="true"
+></div>
+
+<aside
+  id="cart-drawer"
+  class="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm translate-x-full flex-col bg-surface shadow-xl transition-transform duration-300 sm:max-w-md"
+  aria-label="Carrinho"
+  aria-hidden="true"
+>
+  <div class="flex items-center justify-between border-b border-cream-border px-4 py-4">
+    <h2 class="font-display text-lg font-bold text-ink">Seu carrinho</h2>
+    <button
+      id="cart-drawer-close"
+      aria-label="Fechar carrinho"
+      class="rounded-md p-1 text-ink-soft hover:text-ink"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex flex-1 flex-col overflow-y-auto">
+    <div
+      class="flex items-center justify-between bg-[#f0ead9] px-[22px] py-[14px] font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft"
+    >
+      <span>Item</span>
+      <span>Subtotal</span>
+    </div>
+
+    <div id="drawer-cart-empty" class="hidden px-[22px] py-12 text-center text-ink-soft">
+      <p>Seu carrinho está vazio.</p>
+      <a
+        href="/catalogo"
+        class="mt-2.5 inline-block font-display font-semibold text-olive-500 hover:text-olive-600"
+      >
+        Ver catálogo →
+      </a>
+    </div>
+
+    <div id="drawer-cart-items"></div>
+
+    <div
+      id="drawer-cart-summary"
+      class="mt-auto hidden border-t border-dashed border-[#c9bfa6] px-[22px] py-5"
+    >
+      <div class="flex items-center justify-between font-display text-base font-bold text-ink">
+        <span>Total estimado</span>
+        <span id="drawer-cart-total" class="whitespace-nowrap">R$ 0,00</span>
+      </div>
+      <div id="drawer-cart-actions" class="mt-4 hidden">
+        <a
+          id="drawer-checkout-link"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          class="block rounded-md bg-olive-500 py-3 text-center font-display text-sm font-semibold text-cream hover:bg-olive-600"
+        >
+          Finalizar pedido pelo WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { mountCartUI } from '../scripts/cart';
+
+  mountCartUI({
+    itemsEl: document.getElementById('drawer-cart-items')!,
+    emptyEl: document.getElementById('drawer-cart-empty')!,
+    summaryEl: document.getElementById('drawer-cart-summary')!,
+    totalEl: document.getElementById('drawer-cart-total')!,
+    checkoutLink: document.getElementById('drawer-checkout-link') as HTMLAnchorElement,
+    actionsEl: document.getElementById('drawer-cart-actions'),
+  });
+
+  const drawer = document.getElementById('cart-drawer')!;
+  const overlay = document.getElementById('cart-drawer-overlay')!;
+  const closeBtn = document.getElementById('cart-drawer-close')!;
+
+  function openDrawer() {
+    drawer.classList.remove('translate-x-full');
+    drawer.setAttribute('aria-hidden', 'false');
+    overlay.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeDrawer() {
+    drawer.classList.add('translate-x-full');
+    drawer.setAttribute('aria-hidden', 'true');
+    overlay.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  overlay.addEventListener('click', closeDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  // Qualquer elemento com data-open-cart abre o drawer (ícone do header, barra mobile).
+  document.querySelectorAll<HTMLElement>('[data-open-cart]').forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDrawer();
+    });
+  });
+</script>

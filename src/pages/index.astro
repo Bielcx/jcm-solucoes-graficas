@@ -1,64 +1,169 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
+import TrustedBy from '../components/TrustedBy.astro';
 import { products } from '../data/products';
-import { siteConfig } from '../data/config';
 
 const destaques = products.slice(0, 4);
+
+const passos = [
+  { numero: '01', titulo: 'Escolha os produtos', descricao: 'Navegue pelo catálogo e monte sua lista.' },
+  { numero: '02', titulo: 'Monte o pedido', descricao: 'Ajuste a quantidade de cada item no carrinho.' },
+  { numero: '03', titulo: 'Finalize no WhatsApp', descricao: 'O pedido vira mensagem com um clique.' },
+  { numero: '04', titulo: 'Combine com a gente', descricao: 'Prazo, frete e pagamento direto na conversa.' },
+];
+
+const bullets = [
+  'Pronta entrega em linha básica',
+  'Personalização com a sua arte',
+  'Atendimento direto no WhatsApp',
+];
 ---
 
 <BaseLayout title="Início">
-  <section class="bg-brand-50">
-    <div class="mx-auto max-w-6xl px-4 py-16 text-center sm:py-24">
-      <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-        Embalagens e materiais gráficos, prontos ou personalizados
-      </h1>
-      <p class="mx-auto mt-4 max-w-2xl text-gray-600">
-        Monte seu pedido no catálogo e finalize direto pelo WhatsApp. Ou peça um orçamento
-        personalizado com a marca do seu negócio.
+  <!-- Hero -->
+  <section>
+    <div class="mx-auto max-w-6xl px-4 pt-[clamp(56px,8vw,88px)] pb-[clamp(64px,9vw,96px)] text-center">
+      <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-500">
+        Gráfica e embalagens · São Paulo
       </p>
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <h1
+        class="mx-auto mt-4 max-w-[820px] font-display text-[clamp(32px,5vw,56px)] font-bold leading-[1.08] tracking-tight text-ink text-balance"
+      >
+        Embalagem pronta ou com a sua marca. Pedido fechado no WhatsApp.
+      </h1>
+      <p class="mx-auto mt-5 max-w-[560px] text-[17px] leading-relaxed text-ink-soft text-pretty">
+        Escolha no catálogo, monte o pedido e finalize na conversa — sem cadastro, sem plataforma
+        no meio. Precisa de algo sob medida? A gente orça.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
         <a
           href="/catalogo"
-          class="rounded-md bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700"
+          class="rounded-md bg-olive-500 px-7 py-3.5 font-display text-[15px] font-semibold text-cream hover:bg-olive-600"
         >
           Ver catálogo
         </a>
         <a
           href="/orcamento"
-          class="rounded-md border border-gray-300 px-6 py-3 font-semibold text-gray-700 hover:border-brand-500 hover:text-brand-600"
+          class="rounded-md border border-ink/25 bg-surface/50 px-7 py-3.5 font-display text-[15px] font-semibold text-ink hover:border-olive-500 hover:text-olive-500"
         >
-          Pedir orçamento personalizado
+          Orçamento personalizado
         </a>
+      </div>
+      <div class="mt-11 flex flex-wrap justify-center gap-x-7 gap-y-2.5 text-[13px] text-ink-soft">
+        {
+          bullets.map((b) => (
+            <span class="flex items-center gap-[7px]">
+              <span class="size-[5px] rounded-full bg-olive-500" />
+              {b}
+            </span>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 py-14">
-    <div class="mb-6 flex items-center justify-between">
-      <h2 class="text-xl font-bold text-gray-900">Mais pedidos</h2>
-      <a href="/catalogo" class="text-sm font-medium text-brand-600 hover:underline">
-        Ver tudo →
-      </a>
-    </div>
-    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {destaques.map((p) => <ProductCard product={p} />)}
+  <!-- Mais pedidos -->
+  <section class="border-t border-cream-border">
+    <div class="mx-auto max-w-6xl px-4 py-[clamp(48px,7vw,64px)]">
+      <div class="mb-7 flex items-baseline justify-between gap-4">
+        <h2 class="font-display text-2xl font-bold text-ink">Mais pedidos</h2>
+        <a
+          href="/catalogo"
+          class="text-sm font-semibold whitespace-nowrap text-olive-500 hover:text-olive-600"
+        >
+          Ver tudo →
+        </a>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(195px,1fr))] gap-4.5">
+        {destaques.map((p) => <ProductCard product={p} />)}
+      </div>
     </div>
   </section>
 
-  <section class="border-t border-gray-100 bg-gray-50">
-    <div class="mx-auto max-w-6xl px-4 py-14 text-center">
-      <h2 class="text-xl font-bold text-gray-900">Sua marca na embalagem</h2>
-      <p class="mx-auto mt-2 max-w-xl text-gray-600">
-        Trabalhamos também com produtos personalizados sob orçamento — envie sua arte ou peça
-        ajuda com o design.
+  <!-- Como funciona -->
+  <section class="border-t border-cream-border">
+    <div class="mx-auto max-w-6xl px-4 py-[clamp(48px,7vw,64px)]">
+      <h2 class="text-center font-display text-2xl font-bold text-ink">Como funciona</h2>
+      <p class="mx-auto mt-2 max-w-[480px] text-center text-sm text-ink-soft">
+        Do catálogo ao WhatsApp em quatro passos. Sem cadastro em momento nenhum.
+      </p>
+      <div class="mt-11 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-y-7">
+        {
+          passos.map((p) => (
+            <div class="border-l border-cream-border px-6">
+              <div class="font-display text-[13px] font-bold tracking-[0.12em] text-olive-500">
+                {p.numero}
+              </div>
+              <h3 class="mt-2.5 font-display font-semibold text-ink">{p.titulo}</h3>
+              <p class="mt-1.5 text-[13.5px] leading-normal text-ink-soft">{p.descricao}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre nós -->
+  <section class="border-t border-cream-border bg-surface/60">
+    <div class="mx-auto grid max-w-6xl grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-10 px-4 py-[clamp(56px,8vw,72px)]">
+      <div>
+        <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-500">
+          Sobre nós
+        </p>
+        <h2
+          class="mt-3.5 font-display text-[clamp(24px,3vw,34px)] font-bold leading-[1.15] text-ink text-balance"
+        >
+          Uma gráfica de verdade, não um marketplace.
+        </h2>
+        <p class="mt-4.5 text-[15.5px] leading-relaxed text-ink-soft text-pretty">
+          A JCM produz embalagens e materiais gráficos em São Paulo. Quem responde no WhatsApp é
+          quem acompanha a produção — então prazo, acabamento e frete são combinados com quem
+          realmente sabe.
+        </p>
+        <p class="mt-3.5 text-[15.5px] leading-relaxed text-ink-soft text-pretty">
+          Da caixa de pizza pronta ao copo com a sua marca: se é impresso e embala alguma coisa,
+          provavelmente a gente faz.
+        </p>
+        <a
+          href="/orcamento"
+          class="mt-6 inline-block border-b border-olive-500 pb-0.5 font-display text-sm font-semibold whitespace-nowrap text-olive-500 hover:text-olive-600"
+        >
+          Fala com a gente no WhatsApp →
+        </a>
+      </div>
+      <!-- TODO: trocar por foto real da produção -->
+      <div
+        class="flex aspect-[4/3] items-center justify-center rounded-lg border border-cream-border bg-[repeating-linear-gradient(-45deg,#efe8d6_0_14px,#e9e1cd_14px_28px)]"
+      >
+        <span class="px-6 text-center font-mono text-xs text-ink-faint">
+          foto da produção — rolo de papel, corte, pilha de caixas
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <TrustedBy />
+
+  <!-- CTA orçamento -->
+  <section>
+    <div class="mx-auto max-w-6xl px-4 py-[clamp(60px,9vw,88px)] text-center">
+      <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-500">
+        Personalizado
+      </p>
+      <h2 class="mx-auto mt-3.5 max-w-[640px] font-display text-[clamp(28px,4vw,44px)] font-bold leading-[1.1] text-ink text-balance">
+        Sua marca na embalagem
+      </h2>
+      <p class="mx-auto mt-4 max-w-[520px] text-[15.5px] leading-relaxed text-ink-soft text-pretty">
+        Mande sua arte — ou peça ajuda com o design — e a gente devolve um orçamento sob medida.
       </p>
       <a
         href="/orcamento"
-        class="mt-6 inline-block rounded-md bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700"
+        class="mt-8 inline-block rounded-md bg-olive-500 px-[34px] py-[15px] font-display text-[15px] font-semibold text-cream hover:bg-olive-600"
       >
         Solicitar orçamento
       </a>
+      <p class="mt-3.5 text-[12.5px] text-ink-faint">Resposta direto no WhatsApp, sem cadastro.</p>
     </div>
   </section>
 </BaseLayout>

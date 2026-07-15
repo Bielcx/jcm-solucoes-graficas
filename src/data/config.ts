@@ -4,10 +4,10 @@ export const siteConfig = {
   nome: 'JCM Soluções Gráficas',
   descricao: 'Embalagens e materiais gráficos personalizados, do orçamento à entrega.',
   // Número de WhatsApp em formato internacional, só dígitos (55 + DDD + número).
-  whatsappNumero: '5581999999999',
+  whatsappNumero: '5511943432980',
   email: 'contato@jcmsolucoesgraficas.com.br',
   instagram: '@jcmsolucoesgraficas',
-  cidade: 'Recife - PE',
+  cidade: 'São Paulo - SP',
 };
 
 /** Monta um link wa.me com mensagem pré-preenchida. */

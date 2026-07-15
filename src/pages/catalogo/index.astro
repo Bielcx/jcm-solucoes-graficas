@@ -2,51 +2,100 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { products, categorias } from '../../data/products';
-
-const categoriaAtiva = Astro.url.searchParams.get('categoria');
-const lista = categoriaAtiva ? products.filter((p) => p.categoria === categoriaAtiva) : products;
 ---
 
 <BaseLayout title="Catálogo">
-  <div class="mx-auto max-w-6xl px-4 py-10">
-    <h1 class="text-2xl font-bold text-gray-900">Catálogo</h1>
-    <p class="mt-1 text-gray-600">Escolha os produtos, defina a quantidade e monte seu pedido.</p>
+  <div class="mx-auto max-w-6xl px-4 pb-18 pt-14">
+    <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-500">
+      Catálogo
+    </p>
+    <h1 class="mt-3 font-display text-[clamp(28px,3.5vw,40px)] font-bold text-ink">
+      Linha pronta, direto pro carrinho
+    </h1>
+    <p class="mt-2.5 max-w-[520px] text-[15.5px] leading-relaxed text-ink-soft">
+      Defina a quantidade, monte o pedido e feche no WhatsApp. Tudo aqui também sai personalizado
+      sob orçamento.
+    </p>
 
-    <div class="mt-6 flex flex-wrap gap-2">
-      <a
-        href="/catalogo"
-        class={`rounded-full border px-4 py-1.5 text-sm font-medium ${
-          !categoriaAtiva
-            ? 'border-brand-600 bg-brand-600 text-white'
-            : 'border-gray-300 text-gray-700 hover:border-brand-500'
-        }`}
+    <div class="mt-7 flex flex-wrap gap-2">
+      <button
+        type="button"
+        data-categoria-pill=""
+        data-active
+        class="filter-pill rounded-full border border-cream-border px-[18px] py-[7px] font-display text-[13px] font-semibold text-ink-soft hover:border-olive-400"
       >
         Todos
-      </a>
+      </button>
       {
         categorias.map((c) => (
-          <a
-            href={`/catalogo?categoria=${c.valor}`}
-            class={`rounded-full border px-4 py-1.5 text-sm font-medium ${
-              categoriaAtiva === c.valor
-                ? 'border-brand-600 bg-brand-600 text-white'
-                : 'border-gray-300 text-gray-700 hover:border-brand-500'
-            }`}
+          <button
+            type="button"
+            data-categoria-pill={c.valor}
+            class="filter-pill rounded-full border border-cream-border px-[18px] py-[7px] font-display text-[13px] font-semibold text-ink-soft hover:border-olive-400"
           >
             {c.label}
-          </a>
+          </button>
         ))
       }
     </div>
 
-    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {lista.map((p) => <ProductCard product={p} />)}
+    <div
+      id="grid-produtos"
+      class="mt-7 grid grid-cols-[repeat(auto-fill,minmax(195px,1fr))] gap-[18px]"
+    >
+      {
+        products.map((p) => (
+          <div data-categoria={p.categoria}>
+            <ProductCard product={p} />
+          </div>
+        ))
+      }
     </div>
 
-    {
-      lista.length === 0 && (
-        <p class="mt-10 text-center text-gray-500">Nenhum produto nessa categoria ainda.</p>
-      )
-    }
+    <p id="empty-msg" class="mt-12 hidden text-center text-ink-soft">
+      Nenhum produto nessa categoria ainda.
+    </p>
   </div>
+
+  <style>
+    .filter-pill[data-active] {
+      border-color: var(--color-olive-500);
+      background-color: var(--color-olive-500);
+      color: var(--color-cream);
+    }
+  </style>
+
+  <script>
+    const cards = document.querySelectorAll<HTMLElement>('#grid-produtos [data-categoria]');
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const emptyMsg = document.getElementById('empty-msg');
+
+    function applyFilter(categoria: string) {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const match = !categoria || card.dataset.categoria === categoria;
+        card.classList.toggle('hidden', !match);
+        if (match) visibleCount++;
+      });
+      emptyMsg?.classList.toggle('hidden', visibleCount > 0);
+
+      pills.forEach((pill) => {
+        pill.toggleAttribute('data-active', (pill.dataset.categoriaPill || '') === categoria);
+      });
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const categoria = pill.dataset.categoriaPill || '';
+        const url = new URL(window.location.href);
+        if (categoria) url.searchParams.set('categoria', categoria);
+        else url.searchParams.delete('categoria');
+        window.history.pushState({}, '', url);
+        applyFilter(categoria);
+      });
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    applyFilter(params.get('categoria') || '');
+  </script>
 </BaseLayout>

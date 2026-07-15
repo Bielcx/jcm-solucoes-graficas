@@ -1,26 +1,54 @@
 ---
 import { siteConfig } from '../data/config';
+
+const path = Astro.url.pathname;
+
+// Fluido em todos os tamanhos (sem breakpoint fixo) — se não couber do lado
+// da logo, o próprio flex-wrap do container joga o nav pra linha de baixo,
+// então nunca estoura a largura da tela.
+const linkBase =
+  'whitespace-nowrap border-b-2 border-transparent px-2.5 py-2 font-display text-[12px] font-semibold uppercase tracking-[0.1em] text-cream hover:text-olive-200';
+const active = (href: string) => (path.startsWith(href) ? 'text-olive-200 border-olive-400' : '');
 ---
 
-<header class="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-    <a href="/" class="text-lg font-bold text-brand-700">
-      {siteConfig.nome}
+<header
+  id="site-header"
+  class="sticky top-0 z-40 w-full bg-ink-inverse shadow-[0_1px_0_rgba(246,241,228,0.08)] [transform:translateZ(0)]"
+>
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-4 py-2.5">
+    <a href="/" class="flex shrink-0 items-center">
+      <img
+        src="/images/marca/logo-jcm-transparente.png"
+        alt={siteConfig.nome}
+        class="h-[clamp(32px,6vw,42px)] w-auto drop-shadow-sm"
+      />
     </a>
-    <nav class="flex items-center gap-5 text-sm font-medium text-gray-700">
-      <a href="/catalogo" class="hidden hover:text-brand-600 sm:inline">Catálogo</a>
-      <a href="/orcamento" class="hidden hover:text-brand-600 sm:inline">Orçamento</a>
+
+    <nav class="flex items-center gap-0.5">
+      <a href="/catalogo" class={`${linkBase} ${active('/catalogo')}`}>Catálogo</a>
+      <a href="/orcamento" class={`${linkBase} ${active('/orcamento')}`}>Orçamento</a>
       <a
         href="/carrinho"
         id="cart-link"
-        class="relative flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 hover:border-brand-500 hover:text-brand-600"
+        data-open-cart
+        aria-label="Carrinho"
+        class={`ml-2 flex items-center gap-2 whitespace-nowrap rounded-full border border-cream/25 px-3.5 py-[7px] text-cream hover:border-olive-400 hover:bg-olive-400/15 ${path.startsWith('/carrinho') ? 'border-olive-400 bg-olive-400/15' : ''}`}
       >
-        Carrinho
-        <span
-          id="cart-count"
-          class="ml-1 hidden min-w-5 rounded-full bg-brand-500 px-1.5 text-center text-xs font-semibold text-white"
-          >0</span
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-[17px] w-[17px]"
         >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+          ></path>
+        </svg>
+        <span id="cart-count" class="font-display text-[12.5px] font-bold leading-none">0</span>
       </a>
     </nav>
   </div>
@@ -29,14 +57,12 @@ import { siteConfig } from '../data/config';
 <script>
   import { getCartCount, onCartUpdate } from '../scripts/cart';
 
-  function render() {
+  function renderCartCount() {
     const el = document.getElementById('cart-count');
     if (!el) return;
-    const count = getCartCount();
-    el.textContent = String(count);
-    el.classList.toggle('hidden', count === 0);
+    el.textContent = String(getCartCount());
   }
 
-  render();
-  onCartUpdate(render);
+  renderCartCount();
+  onCartUpdate(renderCartCount);
 </script>

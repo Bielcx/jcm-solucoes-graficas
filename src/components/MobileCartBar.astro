@@ -1,0 +1,32 @@
+<div
+  id="mobile-cart-bar"
+  class="fixed inset-x-0 bottom-0 z-40 hidden border-t border-cream/10 bg-ink-inverse px-4 py-3 sm:hidden [transform:translateZ(0)]"
+>
+  <button type="button" data-open-cart class="flex w-full items-center justify-between gap-3">
+    <span class="text-sm text-cream/80">
+      <span id="mobile-cart-count">0</span> item(ns) · <span id="mobile-cart-total">R$ 0,00</span>
+    </span>
+    <span class="rounded-md bg-olive-500 px-4 py-2 font-display text-sm font-semibold text-cream">
+      Ver carrinho
+    </span>
+  </button>
+</div>
+
+<script>
+  import { getCartCount, getCartTotal, onCartUpdate, formatBRL } from '../scripts/cart';
+
+  function render() {
+    const bar = document.getElementById('mobile-cart-bar');
+    const countEl = document.getElementById('mobile-cart-count');
+    const totalEl = document.getElementById('mobile-cart-total');
+    if (!bar || !countEl || !totalEl) return;
+
+    const count = getCartCount();
+    bar.classList.toggle('hidden', count === 0);
+    countEl.textContent = String(count);
+    totalEl.textContent = formatBRL(getCartTotal());
+  }
+
+  render();
+  onCartUpdate(render);
+</script>

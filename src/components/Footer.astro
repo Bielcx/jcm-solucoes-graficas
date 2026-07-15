@@ -1,16 +1,66 @@
 ---
-import { siteConfig } from '../data/config';
+import { siteConfig, buildWhatsAppLink } from '../data/config';
+
+const ano = new Date().getFullYear();
+const linkWhatsApp = buildWhatsAppLink('Olá! Vim pelo site da JCM.');
 ---
 
-<footer class="border-t border-gray-200 bg-gray-50">
-  <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-gray-600">
-    <p class="font-semibold text-gray-900">{siteConfig.nome}</p>
-    <p class="mt-1">{siteConfig.cidade}</p>
-    <p class="mt-1">
-      {siteConfig.email} · {siteConfig.instagram}
-    </p>
-    <p class="mt-4 text-xs text-gray-400">
-      Pedidos e orçamentos finalizados via WhatsApp. Valores sujeitos a confirmação.
-    </p>
+<footer class="border-t border-cream/10 bg-ink-inverse text-cream/80">
+  <div class="mx-auto max-w-6xl px-5 pt-14">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-10 pb-12">
+      <div>
+        <img
+          src="/images/marca/logo-jcm-transparente.png"
+          alt={siteConfig.nome}
+          class="h-10 w-auto drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+        />
+        <p class="mt-4 max-w-[280px] text-[13.5px] leading-relaxed text-cream/60 text-pretty">
+          Embalagens e materiais gráficos, prontos ou com a sua marca. {siteConfig.cidade}.
+        </p>
+      </div>
+
+      <div>
+        <p class="mb-3.5 font-display text-[11px] font-bold uppercase tracking-[0.2em] text-olive-300">
+          Navegue
+        </p>
+        <div class="flex flex-col gap-2.5 text-sm">
+          <a href="/catalogo" class="whitespace-nowrap text-cream/80 hover:text-olive-200">Catálogo</a>
+          <a href="/orcamento" class="whitespace-nowrap text-cream/80 hover:text-olive-200">
+            Orçamento personalizado
+          </a>
+          <a href="/carrinho" class="whitespace-nowrap text-cream/80 hover:text-olive-200">Carrinho</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="mb-3.5 font-display text-[11px] font-bold uppercase tracking-[0.2em] text-olive-300">
+          Contato
+        </p>
+        <div class="flex flex-col gap-2.5 text-sm text-cream/80">
+          <a href={`mailto:${siteConfig.email}`} class="hover:text-olive-200">{siteConfig.email}</a>
+          <a
+            href={`https://instagram.com/${siteConfig.instagram.replace('@', '')}`}
+            class="whitespace-nowrap hover:text-olive-200"
+          >
+            {siteConfig.instagram}
+          </a>
+          <a
+            href={linkWhatsApp}
+            target="_blank"
+            rel="noopener"
+            class="mt-1.5 inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-cream/25 px-4 py-2 font-display text-[12.5px] font-semibold text-cream hover:border-olive-400 hover:bg-olive-400/15"
+          >
+            Chamar no WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-cream/10 py-[18px] text-xs text-cream/45"
+    >
+      <span>© {ano} {siteConfig.nome}</span>
+      <span>Pedidos e orçamentos finalizados via WhatsApp. Valores sujeitos a confirmação.</span>
+    </div>
   </div>
 </footer>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" fill="none">
+  <!-- Marca genérica de cliente — trocar pelo logo real quando houver autorização -->
+  <circle cx="24" cy="24" r="14" stroke="#221b12" stroke-width="3"/>
+  <circle cx="24" cy="24" r="5" fill="#221b12"/>
+  <rect x="48" y="18" width="44" height="4" rx="2" fill="#221b12"/>
+  <rect x="48" y="27" width="28" height="4" rx="2" fill="#221b12" opacity="0.55"/>
+</svg>

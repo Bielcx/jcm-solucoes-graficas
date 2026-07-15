@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efe8d6"/>
+      <stop offset="1" stop-color="#e7dfc9"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <g fill="none" stroke="#221b12" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M300 260 L500 260 L470 560 L330 560 Z"/>
+    <ellipse cx="400" cy="260" rx="100" ry="22"/>
+    <line x1="316" y1="380" x2="484" y2="380" stroke="#55632f"/>
+    <line x1="322" y1="440" x2="478" y2="440" stroke="#55632f"/>
+  </g>
+  <text x="400" y="640" text-anchor="middle" font-family="Georgia, serif" font-size="26" letter-spacing="4" fill="#a89c88">COPO PERSONALIZADO 300ML</text>
+</svg>

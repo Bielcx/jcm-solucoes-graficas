@@ -24,7 +24,7 @@ export const products: Product[] = [
     preco: 2.5,
     unidade: 'unidade (pacote com 50)',
     qtdMinima: 50,
-    imagem: '/images/caixa-pizza-35.jpg',
+    imagem: '/images/produtos/caixa-pizza-35.svg',
     personalizavel: true,
   },
   {
@@ -38,7 +38,7 @@ export const products: Product[] = [
     preco: 1.8,
     unidade: 'unidade (pacote com 25)',
     qtdMinima: 25,
-    imagem: '/images/caixa-doces-6un.jpg',
+    imagem: '/images/produtos/caixa-doces-6un.svg',
     personalizavel: true,
   },
   {
@@ -52,7 +52,7 @@ export const products: Product[] = [
     preco: 3.2,
     unidade: 'unidade (pacote com 50)',
     qtdMinima: 50,
-    imagem: '/images/sacola-kraft-m.jpg',
+    imagem: '/images/produtos/sacola-kraft-m.svg',
     personalizavel: true,
   },
   {
@@ -66,7 +66,7 @@ export const products: Product[] = [
     preco: 1.5,
     unidade: 'unidade (pacote com 50)',
     qtdMinima: 50,
-    imagem: '/images/sacola-papel-p.jpg',
+    imagem: '/images/produtos/sacola-papel-p.svg',
     personalizavel: true,
   },
   {
@@ -80,7 +80,7 @@ export const products: Product[] = [
     preco: 0.35,
     unidade: 'unidade (cartela com 100)',
     qtdMinima: 100,
-    imagem: '/images/rotulo-adesivo-redondo.jpg',
+    imagem: '/images/produtos/rotulo-adesivo-redondo.svg',
     personalizavel: true,
   },
   {
@@ -94,7 +94,7 @@ export const products: Product[] = [
     preco: 0.9,
     unidade: 'unidade (pacote com 50)',
     qtdMinima: 50,
-    imagem: '/images/copo-personalizado-300ml.jpg',
+    imagem: '/images/produtos/copo-personalizado-300ml.svg',
     personalizavel: true,
   },
 ];

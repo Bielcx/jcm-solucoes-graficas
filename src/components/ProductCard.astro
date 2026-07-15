@@ -11,9 +11,9 @@ const preco = product.preco.toLocaleString('pt-BR', { style: 'currency', currenc
 
 <a
   href={`/catalogo/${product.slug}`}
-  class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 transition hover:border-brand-500 hover:shadow-md"
+  class="product-card-3d group flex flex-col overflow-hidden rounded-lg border border-cream-border bg-surface transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:border-olive-500 hover:shadow-[0_8px_24px_rgba(34,27,18,0.10)]"
 >
-  <div class="aspect-square w-full bg-gray-100">
+  <div class="aspect-square w-full bg-gradient-to-br from-[#efe8d6] to-[#e7dfc9]">
     <img
       src={product.imagem}
       alt={product.nome}
@@ -23,11 +23,39 @@ const preco = product.preco.toLocaleString('pt-BR', { style: 'currency', currenc
     />
   </div>
   <div class="flex flex-1 flex-col gap-1 p-4">
-    <h3 class="font-semibold text-gray-900 group-hover:text-brand-600">{product.nome}</h3>
-    <p class="text-sm text-gray-500">{product.descricaoCurta}</p>
-    <div class="mt-auto flex items-center justify-between pt-3">
-      <span class="font-semibold text-brand-700">{preco}</span>
-      <span class="text-xs text-gray-400">mín. {product.qtdMinima} un.</span>
+    <h3 class="font-display text-[15px] font-semibold text-ink group-hover:text-olive-500">
+      {product.nome}
+    </h3>
+    <p class="text-[13px] leading-snug text-ink-soft">{product.descricaoCurta}</p>
+    <div class="mt-auto flex items-baseline justify-between pt-3">
+      <span class="font-display font-semibold whitespace-nowrap text-olive-500">{preco}</span>
+      <span class="text-[11px] whitespace-nowrap text-ink-faint">mín. {product.qtdMinima} un.</span>
     </div>
   </div>
 </a>
+
+<script>
+  // Tilt 3D sutil no hover — inalterado.
+  const MAX_TILT_DEG = 6;
+
+  function attachTilt(card: HTMLElement) {
+    card.style.transformStyle = 'preserve-3d';
+    card.style.willChange = 'transform';
+    card.style.transition = 'transform 150ms ease';
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const rotateX = (-y * MAX_TILT_DEG).toFixed(2);
+      const rotateY = (x * MAX_TILT_DEG).toFixed(2);
+      card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('.product-card-3d').forEach(attachTilt);
+</script>

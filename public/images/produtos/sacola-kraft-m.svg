@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efe8d6"/>
+      <stop offset="1" stop-color="#e7dfc9"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <g fill="none" stroke="#221b12" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M250 300 L230 580 L570 580 L550 300 Z"/>
+    <line x1="250" y1="300" x2="550" y2="300"/>
+    <path d="M300 300 C300 250 320 220 340 220" stroke="#55632f"/>
+    <path d="M460 300 C460 250 480 220 460 220" stroke="#55632f"/>
+    <path d="M300 300 C300 250 320 220 340 220" stroke="#55632f" transform="translate(0,0)"/>
+    <path d="M330 300 Q330 240 400 240 Q470 240 470 300" stroke="#55632f"/>
+  </g>
+  <text x="400" y="660" text-anchor="middle" font-family="Georgia, serif" font-size="26" letter-spacing="4" fill="#a89c88">SACOLA KRAFT MÉDIA</text>
+</svg>
