@@ -1,0 +1,9 @@
+# Config pro deploy no Cloudflare (Workers com assets estáticos — sem SSR,
+# sem worker script). Sem esse arquivo, o `wrangler deploy` tenta "ajudar"
+# rodando auto-config (`astro add cloudflare`), que instala o adapter SSR e
+# quebra o build (miniflare + compatibility_date). Esse arquivo evita isso.
+name = "jcm-solucoes-graficas"
+compatibility_date = "2024-09-23"
+
+[assets]
+directory = "./dist"
