@@ -3,13 +3,18 @@
 // TODO: faixas de comprimento/largura/altura abaixo são estimadas (sem dados
 // reais de produção ainda). Ajustar assim que tivermos os limites reais da JCM.
 // TODO: hoje só cobre "caixa". Outros formatos (sacola, copo) ficam pra depois.
+const sliders = [
+  { key: 'comprimento', sigla: 'C', label: 'Comprimento', min: 15, max: 60, valor: 28 },
+  { key: 'largura', sigla: 'L', label: 'Largura', min: 10, max: 40, valor: 22 },
+  { key: 'altura', sigla: 'A', label: 'Altura', min: 5, max: 30, valor: 9 },
+];
 ---
 
 <div
-  class="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-0 overflow-hidden rounded-lg border border-cream-border"
+  class="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] overflow-hidden rounded-[10px] border border-cream-border shadow-[0_12px_40px_rgba(34,27,18,0.08)]"
 >
   <!-- Painel de controles -->
-  <div class="flex flex-col gap-6 bg-surface p-[26px_24px]">
+  <div class="flex flex-col gap-6 bg-surface p-[28px_26px]">
     <div>
       <p class="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-ink-faint">
         Formato
@@ -17,129 +22,189 @@
       <div class="mt-2.5 flex flex-wrap gap-2">
         <button
           type="button"
-          class="rounded-md border border-olive-500 bg-olive-500 px-4 py-2 font-display text-[13px] font-semibold text-cream"
+          class="rounded-full border border-olive-500 bg-olive-500 px-5 py-2 font-display text-[13px] font-semibold text-cream"
         >
           Caixa
         </button>
-        <button
-          type="button"
-          disabled
-          title="Em breve"
-          class="cursor-not-allowed rounded-md border border-cream-border px-4 py-2 font-display text-[13px] font-semibold text-ink-faint/60"
-        >
-          Sacola
-        </button>
-        <button
-          type="button"
-          disabled
-          title="Em breve"
-          class="cursor-not-allowed rounded-md border border-cream-border px-4 py-2 font-display text-[13px] font-semibold text-ink-faint/60"
-        >
-          Copo
-        </button>
+        {
+          ['Sacola', 'Copo'].map((formato) => (
+            <button
+              type="button"
+              disabled
+              class="cursor-not-allowed rounded-full border border-dashed border-[#d5cab0] px-5 py-2 font-display text-[13px] font-semibold text-ink-faint"
+            >
+              {formato}
+              <span class="ml-1.5 text-[9px] uppercase tracking-[0.1em] text-[#c0b498]">
+                em breve
+              </span>
+            </button>
+          ))
+        }
       </div>
     </div>
 
-    <div class="flex flex-col gap-5">
-      <div>
-        <div class="flex items-baseline justify-between">
-          <label
-            for="bc-comprimento"
-            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
-          >
-            Comprimento
-          </label>
-          <span id="bc-comprimento-valor" class="font-display text-[13px] font-bold text-olive-500"
-            >30 cm</span
-          >
-        </div>
-        <input
-          id="bc-comprimento"
-          type="range"
-          min="15"
-          max="60"
-          step="1"
-          value="30"
-          class="bc-slider mt-2 w-full accent-olive-500"
-        />
-      </div>
-
-      <div>
-        <div class="flex items-baseline justify-between">
-          <label
-            for="bc-largura"
-            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
-          >
-            Largura
-          </label>
-          <span id="bc-largura-valor" class="font-display text-[13px] font-bold text-olive-500"
-            >20 cm</span
-          >
-        </div>
-        <input
-          id="bc-largura"
-          type="range"
-          min="10"
-          max="40"
-          step="1"
-          value="20"
-          class="bc-slider mt-2 w-full accent-olive-500"
-        />
-      </div>
-
-      <div>
-        <div class="flex items-baseline justify-between">
-          <label
-            for="bc-altura"
-            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
-          >
-            Altura
-          </label>
-          <span id="bc-altura-valor" class="font-display text-[13px] font-bold text-olive-500"
-            >15 cm</span
-          >
-        </div>
-        <input
-          id="bc-altura"
-          type="range"
-          min="5"
-          max="30"
-          step="1"
-          value="15"
-          class="bc-slider mt-2 w-full accent-olive-500"
-        />
-      </div>
+    <div class="flex flex-col gap-[22px]">
+      {
+        sliders.map((s) => (
+          <div>
+            <div class="flex items-baseline justify-between gap-3">
+              <label
+                for={`bc-${s.key}`}
+                class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
+              >
+                {s.label}
+              </label>
+              <span
+                id={`bc-${s.key}-valor`}
+                class="font-display text-[15px] font-bold whitespace-nowrap tabular-nums text-olive-500"
+              >
+                {s.valor} cm
+              </span>
+            </div>
+            <input
+              id={`bc-${s.key}`}
+              type="range"
+              class="bc-slider mt-2.5"
+              min={s.min}
+              max={s.max}
+              step="1"
+              value={s.valor}
+            />
+            <div class="mt-[5px] flex justify-between text-[10.5px] tabular-nums text-[#c0b498]">
+              <span>{s.min} cm</span>
+              <span>{s.max} cm</span>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
-    <div class="rounded-md border border-dashed border-[#c9bfa6] bg-cream p-[16px_18px]">
-      <p class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">
-        Resumo
-      </p>
-      <p id="bc-resumo" class="mt-1.5 text-sm text-ink">
-        Caixa de 30 × 20 × 15 cm (comprimento × largura × altura).
-      </p>
-    </div>
-
-    <a
-      id="bc-whatsapp"
-      href="#"
-      target="_blank"
-      rel="noopener"
-      class="rounded-md bg-olive-500 py-[13px] text-center font-display text-[14px] font-semibold text-cream hover:bg-olive-600"
+    <!-- Ficha -->
+    <div
+      class="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-dashed border-[#c9bfa6] bg-cream p-[16px_18px]"
     >
-      Pedir orçamento no WhatsApp
-    </a>
-    <p class="-mt-3 text-[11.5px] text-ink-faint">
-      Medidas de referência — a produção confirma os limites exatos com você.
+      <div>
+        <p class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+          Sua caixa
+        </p>
+        <p
+          id="bc-resumo"
+          class="mt-1 font-display text-[19px] font-bold whitespace-nowrap tabular-nums text-ink"
+        >
+          28 × 22 × 9 cm
+        </p>
+      </div>
+      <div class="text-right">
+        <p class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+          Volume aprox.
+        </p>
+        <p
+          id="bc-volume"
+          class="mt-1 font-display text-[19px] font-bold whitespace-nowrap tabular-nums text-olive-500"
+        >
+          ≈ 5,5 L
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      <a
+        id="bc-whatsapp"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        class="block rounded-md bg-olive-500 py-3.5 text-center font-display text-[14px] font-semibold whitespace-nowrap text-cream hover:bg-olive-600"
+      >
+        Pedir orçamento no WhatsApp
+      </a>
+      <p class="text-[11.5px] leading-normal text-ink-faint">
+        Medidas de referência — a produção confirma os limites exatos com você.
+      </p>
+    </div>
+  </div>
+
+  <!-- Viewport 3D -->
+  <div
+    class="relative min-h-[380px] overflow-hidden bg-ink-inverse [background-image:radial-gradient(rgba(246,241,228,0.07)_1px,transparent_1px)] [background-size:26px_26px]"
+  >
+    <div
+      class="absolute inset-0 [background:radial-gradient(ellipse_at_50%_55%,rgba(138,156,85,0.10),transparent_60%)]"
+    >
+    </div>
+
+    <!-- Readout técnico -->
+    <div
+      class="absolute top-4 left-[18px] z-10 flex gap-3.5 font-mono text-[11px] tracking-[0.06em] text-cream/55"
+    >
+      {
+        sliders.map((s) => (
+          <span>
+            {s.sigla} <span id={`bc-${s.key}-readout`} class="text-olive-300">{s.valor}</span>
+          </span>
+        ))
+      }
+      <span class="text-cream/30">cm</span>
+    </div>
+
+    <!-- Brackets de viewfinder -->
+    <div class="absolute top-3.5 left-3.5 size-4 border-t border-l border-cream/30"></div>
+    <div class="absolute top-3.5 right-3.5 size-4 border-t border-r border-cream/30"></div>
+    <div class="absolute bottom-3.5 left-3.5 size-4 border-b border-l border-cream/30"></div>
+    <div class="absolute bottom-3.5 right-3.5 size-4 border-b border-r border-cream/30"></div>
+
+    <div id="bc-canvas-wrap" class="absolute inset-0"></div>
+
+    <p class="absolute right-0 bottom-3 left-0 z-10 text-center text-[11px] text-cream/35">
+      Arraste para girar · Scroll para zoom
     </p>
   </div>
-
-  <!-- Preview 3D -->
-  <div class="relative flex min-h-[320px] flex-col bg-ink-inverse">
-    <div id="bc-canvas-wrap" class="flex-1"></div>
-    <p class="pb-3 text-center text-[11px] text-cream/35">Arraste para girar · Scroll para zoom</p>
-  </div>
 </div>
+
+<style>
+  .bc-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    margin: 0;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  /* trilha preenchida vem de um gradiente inline atualizado no JS */
+  .bc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border: 6px solid #55632f;
+    border-radius: 50%;
+    background: #f6f1e4;
+    box-shadow: 0 1px 4px rgba(34, 27, 18, 0.25);
+    cursor: grab;
+    transition: transform 120ms ease;
+  }
+  .bc-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+  .bc-slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+  }
+  .bc-slider::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border: 6px solid #55632f;
+    border-radius: 50%;
+    background: #f6f1e4;
+    box-shadow: 0 1px 4px rgba(34, 27, 18, 0.25);
+    cursor: grab;
+  }
+  .bc-slider:focus-visible {
+    box-shadow: 0 0 0 3px rgba(85, 99, 47, 0.25);
+  }
+</style>
 
 <script>
   import * as THREE from 'three';
@@ -153,7 +218,11 @@
   const comprimentoValor = document.getElementById('bc-comprimento-valor');
   const larguraValor = document.getElementById('bc-largura-valor');
   const alturaValor = document.getElementById('bc-altura-valor');
+  const comprimentoReadout = document.getElementById('bc-comprimento-readout');
+  const larguraReadout = document.getElementById('bc-largura-readout');
+  const alturaReadout = document.getElementById('bc-altura-readout');
   const resumo = document.getElementById('bc-resumo');
+  const volumeEl = document.getElementById('bc-volume');
   const whatsappBtn = document.getElementById('bc-whatsapp') as HTMLAnchorElement;
 
   if (wrap) {
@@ -193,41 +262,88 @@
     scene.add(boxGroup);
 
     const fillMaterial = new THREE.MeshBasicMaterial({
-      color: 0x221b12,
+      color: 0xa0b46a,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.08,
+      side: THREE.DoubleSide,
     });
     const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x8a9c55 });
 
-    let mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), fillMaterial);
-    let edges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry), edgeMaterial);
-    boxGroup.add(mesh, edges);
+    // Geometrias unitárias criadas uma vez; as medidas viram escala (nada de rebuild).
+    const unitBox = new THREE.BoxGeometry(1, 1, 1);
+    const unitBoxEdges = new THREE.EdgesGeometry(unitBox);
+    const unitFlap = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0); // pivô na dobra
+    const unitFlapEdges = new THREE.EdgesGeometry(unitFlap);
+
+    const body = new THREE.Group();
+    body.add(new THREE.Mesh(unitBox, fillMaterial));
+    body.add(new THREE.LineSegments(unitBoxEdges, edgeMaterial));
+    boxGroup.add(body);
+
+    // Caixa RSC: 4 abas superiores. Cada aba = hinge (posição/orientação da dobra)
+    // > fold (ângulo de abertura) > sizer (escala em cm).
+    // ponytail: abertura fixa; virar slider se pedirem "caixa fechada/aberta".
+    const ABERTURA = THREE.MathUtils.degToRad(115);
+    const flaps = [
+      { giro: 0, eixo: 'z', sinal: 1 }, // frente
+      { giro: Math.PI, eixo: 'z', sinal: -1 }, // trás
+      { giro: Math.PI / 2, eixo: 'x', sinal: 1 }, // direita
+      { giro: -Math.PI / 2, eixo: 'x', sinal: -1 }, // esquerda
+    ].map((aba) => {
+      const hinge = new THREE.Group();
+      hinge.rotation.y = aba.giro;
+      const fold = new THREE.Group();
+      fold.rotation.x = ABERTURA;
+      const sizer = new THREE.Group();
+      sizer.add(new THREE.Mesh(unitFlap, fillMaterial));
+      sizer.add(new THREE.LineSegments(unitFlapEdges, edgeMaterial));
+      fold.add(sizer);
+      hinge.add(fold);
+      boxGroup.add(hinge);
+      return { ...aba, hinge, sizer };
+    });
+
+    /** Pinta a trilha do slider até a posição atual. */
+    function pintarTrilha(input: HTMLInputElement) {
+      const min = Number(input.min);
+      const pct = ((Number(input.value) - min) / (Number(input.max) - min)) * 100;
+      input.style.background = `linear-gradient(to right, #55632f ${pct}%, #e4dbc7 ${pct}%)`;
+    }
 
     function atualizarCaixa() {
       const comprimento = Number(comprimentoInput.value);
       const largura = Number(larguraInput.value);
       const altura = Number(alturaInput.value);
 
-      boxGroup.remove(mesh, edges);
-      mesh.geometry.dispose();
-      edges.geometry.dispose();
+      const c = comprimento * CM_TO_UNIT;
+      const l = largura * CM_TO_UNIT;
+      const a = altura * CM_TO_UNIT;
 
-      const geometry = new THREE.BoxGeometry(
-        comprimento * CM_TO_UNIT,
-        altura * CM_TO_UNIT,
-        largura * CM_TO_UNIT
-      );
-      mesh = new THREE.Mesh(geometry, fillMaterial);
-      mesh.position.y = (altura * CM_TO_UNIT) / 2;
-      edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), edgeMaterial);
-      edges.position.y = mesh.position.y;
-      boxGroup.add(mesh, edges);
+      body.scale.set(c, a, l);
+      body.position.y = a / 2;
+
+      flaps.forEach(({ eixo, sinal, hinge, sizer }) => {
+        const frenteOuTras = eixo === 'z';
+        hinge.position.set(frenteOuTras ? 0 : (sinal * c) / 2, a, frenteOuTras ? (sinal * l) / 2 : 0);
+        // aba cobre metade da medida oposta à dobra
+        sizer.scale.set(frenteOuTras ? c : l, (frenteOuTras ? l : c) / 2, 1);
+      });
+
+      controls.target.set(0, a / 2, 0);
 
       if (comprimentoValor) comprimentoValor.textContent = `${comprimento} cm`;
       if (larguraValor) larguraValor.textContent = `${largura} cm`;
       if (alturaValor) alturaValor.textContent = `${altura} cm`;
-      if (resumo) {
-        resumo.textContent = `Caixa de ${comprimento} × ${largura} × ${altura} cm (comprimento × largura × altura).`;
+      if (comprimentoReadout) comprimentoReadout.textContent = String(comprimento);
+      if (larguraReadout) larguraReadout.textContent = String(largura);
+      if (alturaReadout) alturaReadout.textContent = String(altura);
+      if (resumo) resumo.textContent = `${comprimento} × ${largura} × ${altura} cm`;
+      if (volumeEl) {
+        const litros = (comprimento * largura * altura) / 1000;
+        volumeEl.textContent = `≈ ${litros.toLocaleString('pt-BR', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        })} L`;
       }
       whatsappBtn.href = buildWhatsAppLink(
         [
@@ -243,8 +359,12 @@
     }
 
     [comprimentoInput, larguraInput, alturaInput].forEach((input) =>
-      input.addEventListener('input', atualizarCaixa)
+      input.addEventListener('input', () => {
+        pintarTrilha(input);
+        atualizarCaixa();
+      })
     );
+    [comprimentoInput, larguraInput, alturaInput].forEach(pintarTrilha);
     atualizarCaixa();
 
     function onResize() {
