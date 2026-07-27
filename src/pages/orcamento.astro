@@ -1,19 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BoxConfigurator from '../components/BoxConfigurator.astro';
 ---
 
 <BaseLayout title="Orçamento personalizado">
-  <div class="mx-auto max-w-[640px] px-4 pb-18 pt-14">
+  <div class="mx-auto max-w-4xl px-4 pb-18 pt-14">
     <p class="font-display text-xs font-semibold uppercase tracking-[0.22em] text-olive-500">
       Sob medida
     </p>
     <h1 class="mt-3 font-display text-[clamp(28px,3.5vw,40px)] font-bold text-ink">
       Orçamento personalizado
     </h1>
-    <p class="mt-2.5 text-[15.5px] leading-relaxed text-ink-soft">
+    <p class="mt-2.5 max-w-[560px] text-[15.5px] leading-relaxed text-ink-soft">
       Conta o que você precisa e a solicitação já chega montada no nosso WhatsApp. Se já tiver
       arte ou logo, manda na conversa.
     </p>
+
+    <div class="mt-10">
+      <h2 class="font-display text-lg font-bold text-ink">Monte sua caixa personalizada</h2>
+      <p class="mt-1.5 max-w-[560px] text-sm text-ink-soft">
+        Mexa nos controles e veja a caixa mudar de tamanho em tempo real.
+      </p>
+      <div class="mt-5">
+        <BoxConfigurator />
+      </div>
+    </div>
+
+    <div class="mt-14 border-t border-cream-border pt-10">
+      <h2 class="font-display text-lg font-bold text-ink">Outro tipo de pedido</h2>
+      <p class="mt-1.5 max-w-[560px] text-sm text-ink-soft">
+        Sacola, rótulo, copo ou qualquer coisa fora do padrão — descreve aqui.
+      </p>
+    </div>
 
     <form
       id="orcamento-form"

@@ -1,0 +1,268 @@
+---
+// Configurador 3D de caixa personalizada — MVP.
+// TODO: faixas de comprimento/largura/altura abaixo são estimadas (sem dados
+// reais de produção ainda). Ajustar assim que tivermos os limites reais da JCM.
+// TODO: hoje só cobre "caixa". Outros formatos (sacola, copo) ficam pra depois.
+---
+
+<div
+  class="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-0 overflow-hidden rounded-lg border border-cream-border"
+>
+  <!-- Painel de controles -->
+  <div class="flex flex-col gap-6 bg-surface p-[26px_24px]">
+    <div>
+      <p class="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-ink-faint">
+        Formato
+      </p>
+      <div class="mt-2.5 flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-md border border-olive-500 bg-olive-500 px-4 py-2 font-display text-[13px] font-semibold text-cream"
+        >
+          Caixa
+        </button>
+        <button
+          type="button"
+          disabled
+          title="Em breve"
+          class="cursor-not-allowed rounded-md border border-cream-border px-4 py-2 font-display text-[13px] font-semibold text-ink-faint/60"
+        >
+          Sacola
+        </button>
+        <button
+          type="button"
+          disabled
+          title="Em breve"
+          class="cursor-not-allowed rounded-md border border-cream-border px-4 py-2 font-display text-[13px] font-semibold text-ink-faint/60"
+        >
+          Copo
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-5">
+      <div>
+        <div class="flex items-baseline justify-between">
+          <label
+            for="bc-comprimento"
+            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
+          >
+            Comprimento
+          </label>
+          <span id="bc-comprimento-valor" class="font-display text-[13px] font-bold text-olive-500"
+            >30 cm</span
+          >
+        </div>
+        <input
+          id="bc-comprimento"
+          type="range"
+          min="15"
+          max="60"
+          step="1"
+          value="30"
+          class="bc-slider mt-2 w-full accent-olive-500"
+        />
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between">
+          <label
+            for="bc-largura"
+            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
+          >
+            Largura
+          </label>
+          <span id="bc-largura-valor" class="font-display text-[13px] font-bold text-olive-500"
+            >20 cm</span
+          >
+        </div>
+        <input
+          id="bc-largura"
+          type="range"
+          min="10"
+          max="40"
+          step="1"
+          value="20"
+          class="bc-slider mt-2 w-full accent-olive-500"
+        />
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between">
+          <label
+            for="bc-altura"
+            class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink"
+          >
+            Altura
+          </label>
+          <span id="bc-altura-valor" class="font-display text-[13px] font-bold text-olive-500"
+            >15 cm</span
+          >
+        </div>
+        <input
+          id="bc-altura"
+          type="range"
+          min="5"
+          max="30"
+          step="1"
+          value="15"
+          class="bc-slider mt-2 w-full accent-olive-500"
+        />
+      </div>
+    </div>
+
+    <div class="rounded-md border border-dashed border-[#c9bfa6] bg-cream p-[16px_18px]">
+      <p class="font-display text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+        Resumo
+      </p>
+      <p id="bc-resumo" class="mt-1.5 text-sm text-ink">
+        Caixa de 30 × 20 × 15 cm (comprimento × largura × altura).
+      </p>
+    </div>
+
+    <a
+      id="bc-whatsapp"
+      href="#"
+      target="_blank"
+      rel="noopener"
+      class="rounded-md bg-olive-500 py-[13px] text-center font-display text-[14px] font-semibold text-cream hover:bg-olive-600"
+    >
+      Pedir orçamento no WhatsApp
+    </a>
+    <p class="-mt-3 text-[11.5px] text-ink-faint">
+      Medidas de referência — a produção confirma os limites exatos com você.
+    </p>
+  </div>
+
+  <!-- Preview 3D -->
+  <div class="relative flex min-h-[320px] flex-col bg-ink-inverse">
+    <div id="bc-canvas-wrap" class="flex-1"></div>
+    <p class="pb-3 text-center text-[11px] text-cream/35">Arraste para girar · Scroll para zoom</p>
+  </div>
+</div>
+
+<script>
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+  import { buildWhatsAppLink } from '../data/config';
+
+  const wrap = document.getElementById('bc-canvas-wrap');
+  const comprimentoInput = document.getElementById('bc-comprimento') as HTMLInputElement;
+  const larguraInput = document.getElementById('bc-largura') as HTMLInputElement;
+  const alturaInput = document.getElementById('bc-altura') as HTMLInputElement;
+  const comprimentoValor = document.getElementById('bc-comprimento-valor');
+  const larguraValor = document.getElementById('bc-largura-valor');
+  const alturaValor = document.getElementById('bc-altura-valor');
+  const resumo = document.getElementById('bc-resumo');
+  const whatsappBtn = document.getElementById('bc-whatsapp') as HTMLAnchorElement;
+
+  if (wrap) {
+    // --- cena base ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      40,
+      wrap.clientWidth / wrap.clientHeight || 1,
+      0.1,
+      100
+    );
+    camera.position.set(5, 4.5, 6);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+    wrap.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.enablePan = false;
+    controls.minDistance = 3;
+    controls.maxDistance = 16;
+    controls.target.set(0, 0.8, 0);
+
+    // grade de chão, mesmo espírito do line-art do site
+    const grid = new THREE.GridHelper(14, 14, 0x55632f, 0x2a2318);
+    (grid.material as THREE.Material).transparent = true;
+    (grid.material as THREE.Material).opacity = 0.5;
+    scene.add(grid);
+
+    // --- caixa ---
+    const CM_TO_UNIT = 1 / 10; // 10cm ≈ 1 unidade de cena
+
+    const boxGroup = new THREE.Group();
+    scene.add(boxGroup);
+
+    const fillMaterial = new THREE.MeshBasicMaterial({
+      color: 0x221b12,
+      transparent: true,
+      opacity: 0.55,
+    });
+    const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x8a9c55 });
+
+    let mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), fillMaterial);
+    let edges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry), edgeMaterial);
+    boxGroup.add(mesh, edges);
+
+    function atualizarCaixa() {
+      const comprimento = Number(comprimentoInput.value);
+      const largura = Number(larguraInput.value);
+      const altura = Number(alturaInput.value);
+
+      boxGroup.remove(mesh, edges);
+      mesh.geometry.dispose();
+      edges.geometry.dispose();
+
+      const geometry = new THREE.BoxGeometry(
+        comprimento * CM_TO_UNIT,
+        altura * CM_TO_UNIT,
+        largura * CM_TO_UNIT
+      );
+      mesh = new THREE.Mesh(geometry, fillMaterial);
+      mesh.position.y = (altura * CM_TO_UNIT) / 2;
+      edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), edgeMaterial);
+      edges.position.y = mesh.position.y;
+      boxGroup.add(mesh, edges);
+
+      if (comprimentoValor) comprimentoValor.textContent = `${comprimento} cm`;
+      if (larguraValor) larguraValor.textContent = `${largura} cm`;
+      if (alturaValor) alturaValor.textContent = `${altura} cm`;
+      if (resumo) {
+        resumo.textContent = `Caixa de ${comprimento} × ${largura} × ${altura} cm (comprimento × largura × altura).`;
+      }
+      whatsappBtn.href = buildWhatsAppLink(
+        [
+          'Olá! Quero um orçamento pra uma caixa personalizada:',
+          '',
+          `Comprimento: ${comprimento} cm`,
+          `Largura: ${largura} cm`,
+          `Altura: ${altura} cm`,
+          '',
+          '(Medidas de referência — posso ajustar conforme a produção.)',
+        ].join('\n')
+      );
+    }
+
+    [comprimentoInput, larguraInput, alturaInput].forEach((input) =>
+      input.addEventListener('input', atualizarCaixa)
+    );
+    atualizarCaixa();
+
+    function onResize() {
+      if (!wrap) return;
+      const w = wrap.clientWidth || 1;
+      const h = wrap.clientHeight || 1;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize);
+    new ResizeObserver(onResize).observe(wrap);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+</script>
